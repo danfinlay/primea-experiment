@@ -10,7 +10,7 @@ const level = require('level-browserify')
 const db = level('./testdb')
 const BaseContainer = require('../container')
 
-test('counter', function (t) {
+test('counter', async function (t) {
   const tree = new RadixTree({
     db
   })
@@ -20,7 +20,7 @@ test('counter', function (t) {
   egress.on('message', msg => {
     console.log('returned alright')
     console.dir(msg)
-    t.ok(msg.funcArguments[0] === 0, 'network count')
+    t.ok(msg.funcArguments[0] === 1, 'network added!')
     t.end()
   })
 
@@ -29,10 +29,18 @@ test('counter', function (t) {
     containers: [MetaMask, Network, Account],
     drivers: [egress]
   })
-  const {module} = hypervisor.createActor(MetaMask.typeId)
+  const { module: metaMask } = hypervisor.createActor(MetaMask.typeId)
+  console.dir(metaMask)
+
+  const addNetworkMsg = new Message({
+    funcRef: metaMask.getFuncRef('addNetwork'),
+    funcArguments: 'custom network',
+  })
+  hypervisor.send(addNetworkMsg)
+  await hypervisor.createStateRoot()
 
   const message = new Message({
-    funcRef: module.getFuncRef('readData'),
+    funcRef: metaMask.getFuncRef('getNetworks'),
     funcArguments: [new FunctionRef({actorID: egress.id})]
   })
 
