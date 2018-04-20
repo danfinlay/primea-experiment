@@ -7,8 +7,21 @@ class MetaMaskController extends BaseContainer {
 
   constructor (opts) {
     super(opts)
-    this.counter = 0
-    this.network = new Network()
+    this.networks = []
+  }
+
+  addNetwork (params) {
+    this.networks.push(this.actor.createActor(Network.typeId, 0, params).module)
+  }
+
+  getNetworks (funcRef) {
+    const message = new Message({
+      funcRef,
+      funcArguments: [this.networks.map(network => {
+        const { module } = network
+        return module
+      })]
+    })
   }
 
   static get typeId () {
@@ -16,10 +29,11 @@ class MetaMaskController extends BaseContainer {
   }
 
   readData (funcRef) {
-    const count = this.counter++
+    console.log('count from ' + this.networks.length)
+    console.dir(this)
     var message = new Message({
       funcRef,
-      funcArguments: ['blockchain data so live much impress: ' + count]
+      funcArguments: [this.networks.length],
     })
     this.actor.send(message)
   }
