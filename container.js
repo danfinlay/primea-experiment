@@ -6,6 +6,7 @@ class BaseContainer {
     this.actor = actor
   }
   onStartup () {}
+
   static onCreation (code, id) {
     const exp = {}
     Object.getOwnPropertyNames(this.prototype).filter(name => name !== 'constructor').forEach(name => {
