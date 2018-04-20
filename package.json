@@ -1,0 +1,28 @@
+{
+  "name": "metamask-primea",
+  "version": "1.0.0",
+  "description": "A Primea version of MetaMask",
+  "main": "client.js",
+  "scripts": {
+    "test": "node test",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dfinity-radix-tree": "^0.2.2",
+    "dnode": "^1.2.2",
+    "dnode-p": "^1.0.0",
+    "dnode-promise": "^3.0.1",
+    "level": "^3.0.0",
+    "primea-hypervisor": "^0.7.0",
+    "primea-objects": "0.0.3"
+  },
+  "devDependencies": {
+    "level-browserify": "^1.1.2",
+    "tape": "^4.9.0"
+  },
+  "directories": {
+    "test": "test"
+  }
+}
